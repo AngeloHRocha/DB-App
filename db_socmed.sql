@@ -3,7 +3,7 @@ USE db_socmed;
 
 -- MySQL dump 10.13  Distrib 8.0.38, for macos14 (x86_64)
 --
--- Host: localhost    Database: dp_socmed
+-- Host: localhost    Database: db_socmed
 -- ------------------------------------------------------
 -- Server version	9.0.1
 
@@ -172,9 +172,6 @@ DROP TABLE IF EXISTS `posts`;
 CREATE TABLE `posts` (
   `post_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  `like_count` int NOT NULL DEFAULT '0',
-  `comment_count` int NOT NULL DEFAULT '0',
-  `share_count` int NOT NULL DEFAULT '0',
   `post_date` date NOT NULL,
   `visibility` varchar(45) NOT NULL,
   `platform_id` int NOT NULL,
@@ -238,4 +235,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-19 13:27:10
+-- Dump completed on 2024-11-21  0:38:07
