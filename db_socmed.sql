@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS db_socmed;
+USE db_socmed;
+
 -- MySQL dump 10.13  Distrib 8.0.38, for macos14 (x86_64)
 --
 -- Host: localhost    Database: dp_socmed
