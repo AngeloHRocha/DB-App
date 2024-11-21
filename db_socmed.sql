@@ -29,6 +29,7 @@ CREATE TABLE `accounts` (
   `account_id` int NOT NULL AUTO_INCREMENT,
   `platform_id` int NOT NULL,
   `user_id` int NOT NULL,
+  `pinned_post_id` int,
   `account_name` varchar(45) NOT NULL,
   `join_date` date NOT NULL,
   `is_private` tinyint NOT NULL,
@@ -36,8 +37,10 @@ CREATE TABLE `accounts` (
   UNIQUE KEY `account_name_UNIQUE` (`account_name`),
   KEY `platform_id_idx` (`platform_id`),
   KEY `user_id_idx` (`user_id`),
+  KEY `pinned_post_id_idx` (`pinned_post_id`),
   CONSTRAINT `platform_id` FOREIGN KEY (`platform_id`) REFERENCES `platforms` (`platform_id`),
-  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `pinned_post_id` FOREIGN KEY (`pinned_post_id`) REFERENCES `posts` (`post_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
