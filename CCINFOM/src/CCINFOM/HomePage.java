@@ -63,18 +63,33 @@ public class HomePage extends javax.swing.JFrame {
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 147, -1));
 
         btnEngTypes.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
-        btnEngTypes.setText("Engagement_type");
+        btnEngTypes.setText("Engagement Type");
         btnEngTypes.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        btnEngTypes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEngTypesActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnEngTypes, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 200, 40));
 
         btnPost.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
         btnPost.setText("Post");
         btnPost.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        btnPost.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPostActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnPost, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 70, 180, 40));
 
         btnContentTypes.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
-        btnContentTypes.setText("Content type");
+        btnContentTypes.setText("Content Type");
         btnContentTypes.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        btnContentTypes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnContentTypesActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnContentTypes, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 130, 180, 40));
 
         btnPlatform.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
@@ -228,6 +243,27 @@ public class HomePage extends javax.swing.JFrame {
         plat.setVisible(true);
         this.hide();
     }//GEN-LAST:event_btnPlatformActionPerformed
+
+    private void btnContentTypesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContentTypesActionPerformed
+        // TODO add your handling code here:
+        ContentType contentType = new ContentType();
+        contentType.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_btnContentTypesActionPerformed
+
+    private void btnPostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPostActionPerformed
+        // TODO add your handling code here:
+        Post post = new Post();
+        post.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_btnPostActionPerformed
+
+    private void btnEngTypesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEngTypesActionPerformed
+        // TODO add your handling code here:
+        EngagementType engType = new EngagementType();
+        engType.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_btnEngTypesActionPerformed
 
     /**
      * @param args the command line arguments
