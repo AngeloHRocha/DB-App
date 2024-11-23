@@ -30,11 +30,6 @@ import java.util.Vector;
  * @author Asus
  */
 public class CreateAccount extends javax.swing.JFrame {
-    
-    private static final String username = "root";
-    private static final String password = "Mypassword";
-    private static final String connURL = "jdbc:mysql://localhost:3306/db_socmed";
-    
     /**
      * Creates new form CreateAccount
      */
@@ -48,7 +43,7 @@ public class CreateAccount extends javax.swing.JFrame {
         int colCount;
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection sqlConn = DriverManager.getConnection(connURL, username, password);
+            Connection sqlConn = DatabaseConnection.getConnection();
             PreparedStatement pst = sqlConn.prepareStatement("SELECT * FROM accounts");
             ResultSet rs = pst.executeQuery();
             ResultSetMetaData st = rs.getMetaData();
@@ -74,7 +69,7 @@ public class CreateAccount extends javax.swing.JFrame {
         
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection sqlConn = DriverManager.getConnection(connURL, username, password);
+            Connection sqlConn = DatabaseConnection.getConnection();
             PreparedStatement pst = sqlConn.prepareStatement("SELECT platform_name FROM platforms");
             
             ResultSet rs = pst.executeQuery();
@@ -255,7 +250,7 @@ public class CreateAccount extends javax.swing.JFrame {
         
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection sqlConn = DriverManager.getConnection(connURL, username, password);
+            Connection sqlConn = DatabaseConnection.getConnection();
             
             // Getting platform_id
             String platform_name = (String)cbPlatform.getSelectedItem();

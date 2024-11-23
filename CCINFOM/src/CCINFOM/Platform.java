@@ -30,11 +30,6 @@ import java.util.Vector;
  * @author Asus
  */
 public class Platform extends javax.swing.JFrame {
-    
-    private static final String username = "root";
-    private static final String password = "Mypassword";
-    private static final String connURL = "jdbc:mysql://localhost:3306/db_socmed";
-    
     /**
      * Creates new form Platform
      */
@@ -47,8 +42,8 @@ public class Platform extends javax.swing.JFrame {
         int colCount;
         
         try{
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection sqlConn = DriverManager.getConnection(connURL, username, password);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection sqlConn = DatabaseConnection.getConnection();
             PreparedStatement pst = sqlConn.prepareStatement("SELECT * FROM platforms");
             
             ResultSet rs = pst.executeQuery();
@@ -165,7 +160,7 @@ public class Platform extends javax.swing.JFrame {
                 btnAddActionPerformed(evt);
             }
         });
-        jPanel4.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 200, 52));
+        jPanel4.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 200, 50));
 
         btnUpdate.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 18)); // NOI18N
         btnUpdate.setText("Update");
@@ -175,7 +170,7 @@ public class Platform extends javax.swing.JFrame {
                 btnUpdateActionPerformed(evt);
             }
         });
-        jPanel4.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 200, 52));
+        jPanel4.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 200, 50));
 
         btnDelete.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 18)); // NOI18N
         btnDelete.setText("Delete");
@@ -185,7 +180,7 @@ public class Platform extends javax.swing.JFrame {
                 btnDeleteActionPerformed(evt);
             }
         });
-        jPanel4.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 200, 52));
+        jPanel4.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 200, 50));
 
         btnExit.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 18)); // NOI18N
         btnExit.setText("Exit");
@@ -195,9 +190,9 @@ public class Platform extends javax.swing.JFrame {
                 btnExitActionPerformed(evt);
             }
         });
-        jPanel4.add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 200, 52));
+        jPanel4.add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 200, 50));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 420, 260, 330));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 420, 260, 270));
 
         tablePlat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -232,21 +227,17 @@ public class Platform extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablePlat);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 730, 330));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 730, 270));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1081, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1081, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
         );
 
         pack();
@@ -258,48 +249,16 @@ public class Platform extends javax.swing.JFrame {
         hp.setVisible(true);
     }//GEN-LAST:event_btnExitActionPerformed
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        ArrayList<Integer> dateList = returnCalendar(); // day, month, year
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection sqlConn = DriverManager.getConnection(connURL, username, password);
-            PreparedStatement pst = sqlConn.prepareStatement("INSERT INTO platforms(platform_name, platform_version, country_of_origin, release_date)"
-                    + "VALUE(?, ?, ?, ?)");
-            
-            String name = tfName.getText();
-            String version = tfVersion.getText();
-            String country = tfCountry.getText();
-            String date = dateList.get(2) + "-" + dateList.get(1) + "-" + dateList.get(0);
-               
-            if(name.isEmpty() || version.isEmpty() || country.isEmpty()){
-                JOptionPane.showMessageDialog(this, "Complete the information needed.", "Warning", JOptionPane.ERROR_MESSAGE);
-            }
-            else{
-                pst.setString(1, name);
-                pst.setString(2, version);
-                pst.setString(3, country);
-                pst.setString(4, date);
-                
-                pst.executeUpdate();
-                JOptionPane.showMessageDialog(this, "Record Added!", "User", JOptionPane.OK_OPTION);
-                updateDB();
-            }
-            
-        }catch(HeadlessException | ClassNotFoundException | SQLException ex){
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
-    }//GEN-LAST:event_btnAddActionPerformed
-
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         DefaultTableModel recordTable = (DefaultTableModel)tablePlat.getModel();
         int selectedRow = tablePlat.getSelectedRow();
-        
+
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection sqlConn = DriverManager.getConnection(connURL, username, password);
+            Connection sqlConn = DatabaseConnection.getConnection();
             if(JOptionPane.showConfirmDialog(this, "Confirm if you want to delete record.", "Message", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION){
                 PreparedStatement pst = sqlConn.prepareStatement("DELETE FROM platforms WHERE platform_id=?");
-                
+
                 pst.setInt(1, Integer.parseInt(recordTable.getValueAt(selectedRow, recordTable.findColumn("platform_id")).toString()));
                 pst.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Record Deleted!", "Message", JOptionPane.OK_OPTION);
@@ -310,25 +269,6 @@ public class Platform extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void tablePlatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePlatMouseClicked
-        DefaultTableModel recordTable = (DefaultTableModel)tablePlat.getModel();
-        int selectedRow = tablePlat.getSelectedRow();
-        
-        try{
-            String dateString = recordTable.getValueAt(selectedRow, recordTable.findColumn("release_date")).toString();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = dateFormat.parse(dateString);
-            
-            calendarDate.setDate(date);
-            tfName.setText(recordTable.getValueAt(selectedRow, recordTable.findColumn("platform_name")).toString());
-            tfVersion.setText(recordTable.getValueAt(selectedRow, recordTable.findColumn("platform_version")).toString());
-            tfCountry.setText(recordTable.getValueAt(selectedRow, recordTable.findColumn("country_of_origin")).toString());
-            
-        }catch(ParseException ex){
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
-    }//GEN-LAST:event_tablePlatMouseClicked
-
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         ArrayList<Integer> dateList = returnCalendar();
         ArrayList<String> ids = new ArrayList<String>();
@@ -336,47 +276,46 @@ public class Platform extends javax.swing.JFrame {
         boolean isNewEmpty = false;
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection sqlConn = DriverManager.getConnection(connURL, username, password);
+            Connection sqlConn = DatabaseConnection.getConnection();
             PreparedStatement pst = sqlConn.prepareStatement("SELECT platform_id FROM platforms WHERE platform_name=?");
-            
+
             /*
-            Problem: When a user change the platform name to an existing name, the program pop a "Record Updated" message, 
+            Problem: When a user change the platform name to an existing name, the program pop a "Record Updated" message,
             however, it will not show up in the table since name is set to UNIQUE. To solve the problem (the record updated message),
             1. Compare the "old version" platform name with the user updated name
-               - If the "old version" name = user updated name -> proceed to next step
-               - If the user updated name is not present in the table -> proceed to next step
-               - If the user updated name already exist -> show error message instead of the record updated message
+            - If the "old version" name = user updated name -> proceed to next step
+            - If the user updated name is not present in the table -> proceed to next step
+            - If the user updated name already exist -> show error message instead of the record updated message
             */
             DefaultTableModel recordTable = (DefaultTableModel)tablePlat.getModel();
             int selectedRow = tablePlat.getSelectedRow();
             String old_name = recordTable.getValueAt(selectedRow, recordTable.findColumn("platform_name")).toString();
             String new_name = tfName.getText();
 
-            
-            for(int j = 0; j < 2; j++){ 
+            for(int j = 0; j < 2; j++){
                 pst.setString(1, j == 0 ? old_name : new_name);
-                
+
                 rs = pst.executeQuery();
                 if(!(rs.next()))
-                    isNewEmpty = true;
+                isNewEmpty = true;
                 else
-                    ids.add(rs.getString(1)); // old name's id always exist
+                ids.add(rs.getString(1)); // old name's id always exist
             }
-            
+
             if(isNewEmpty || ids.get(0).equals(ids.get(1))){
                 String version = tfVersion.getText();
                 String country = tfCountry.getText();
                 String date = dateList.get(2) + "-" + dateList.get(1) + "-" + dateList.get(0);
-                
+
                 pst = sqlConn.prepareStatement("UPDATE platforms SET platform_name=?, platform_version=?, country_of_origin=?, release_date=?"
-                        + "WHERE platform_id=?");
-                
+                    + "WHERE platform_id=?");
+
                 pst.setString(1, new_name);
                 pst.setString(2, version);
                 pst.setString(3, country);
                 pst.setString(4, date);
                 pst.setString(5, ids.get(0)); // better to use old name's id (much safer), since new name has no id yet (2 conditions in if statement)
-                
+
                 pst.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Record Updated!", "User", JOptionPane.OK_OPTION);
                 updateDB();
@@ -384,12 +323,63 @@ public class Platform extends javax.swing.JFrame {
                 tablePlat.setRowSelectionInterval(selectedRow, selectedRow);
             }
             else
-                JOptionPane.showMessageDialog(this, "Platform name has been created.", "Error", JOptionPane.ERROR_MESSAGE);
-       
+            JOptionPane.showMessageDialog(this, "Platform name has been created.", "Error", JOptionPane.ERROR_MESSAGE);
+
         }catch(HeadlessException | ClassNotFoundException | SQLException ex){
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        ArrayList<Integer> dateList = returnCalendar(); // day, month, year
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection sqlConn = DatabaseConnection.getConnection();
+            PreparedStatement pst = sqlConn.prepareStatement("INSERT INTO platforms(platform_name, platform_version, country_of_origin, release_date)"
+                + "VALUE(?, ?, ?, ?)");
+
+            String name = tfName.getText();
+            String version = tfVersion.getText();
+            String country = tfCountry.getText();
+            String date = dateList.get(2) + "-" + dateList.get(1) + "-" + dateList.get(0);
+
+            if(name.isEmpty() || version.isEmpty() || country.isEmpty()){
+                JOptionPane.showMessageDialog(this, "Complete the information needed.", "Warning", JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                pst.setString(1, name);
+                pst.setString(2, version);
+                pst.setString(3, country);
+                pst.setString(4, date);
+
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Record Added!", "User", JOptionPane.OK_OPTION);
+                updateDB();
+            }
+
+        }catch(HeadlessException | ClassNotFoundException | SQLException ex){
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void tablePlatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePlatMouseClicked
+        DefaultTableModel recordTable = (DefaultTableModel)tablePlat.getModel();
+        int selectedRow = tablePlat.getSelectedRow();
+
+        try{
+            String dateString = recordTable.getValueAt(selectedRow, recordTable.findColumn("release_date")).toString();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = dateFormat.parse(dateString);
+
+            calendarDate.setDate(date);
+            tfName.setText(recordTable.getValueAt(selectedRow, recordTable.findColumn("platform_name")).toString());
+            tfVersion.setText(recordTable.getValueAt(selectedRow, recordTable.findColumn("platform_version")).toString());
+            tfCountry.setText(recordTable.getValueAt(selectedRow, recordTable.findColumn("country_of_origin")).toString());
+
+        }catch(ParseException ex){
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_tablePlatMouseClicked
 
     /**
      * @param args the command line arguments

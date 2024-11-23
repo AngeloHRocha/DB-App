@@ -30,7 +30,7 @@ public class HomePage extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         btnEngTypes = new javax.swing.JButton();
-        btnPost = new javax.swing.JButton();
+        post = new javax.swing.JButton();
         btnContentTypes = new javax.swing.JButton();
         btnPlatform = new javax.swing.JButton();
         btnUser = new javax.swing.JButton();
@@ -65,16 +65,31 @@ public class HomePage extends javax.swing.JFrame {
         btnEngTypes.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
         btnEngTypes.setText("Engagement_type");
         btnEngTypes.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        btnEngTypes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEngTypesActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnEngTypes, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 200, 40));
 
-        btnPost.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
-        btnPost.setText("Post");
-        btnPost.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-        jPanel1.add(btnPost, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 70, 180, 40));
+        post.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
+        post.setText("Post");
+        post.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        post.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                postActionPerformed(evt);
+            }
+        });
+        jPanel1.add(post, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 70, 180, 40));
 
         btnContentTypes.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
         btnContentTypes.setText("Content type");
         btnContentTypes.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        btnContentTypes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnContentTypesActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnContentTypes, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 130, 180, 40));
 
         btnPlatform.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
@@ -236,11 +251,35 @@ public class HomePage extends javax.swing.JFrame {
         this.hide();
     }//GEN-LAST:event_btnPlatformActionPerformed
 
+    private void postActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postActionPerformed
+        // TODO add your handling code here:
+        Post post = new Post();
+        post.setVisible(true);
+        this.hide(); 
+    }//GEN-LAST:event_postActionPerformed
+
     private void btnPlatUsageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlatUsageActionPerformed
-        PlatformUsage pu = new PlatformUsage();
-        pu.setVisible(true);
+        // TODO add your handling code here:
+        PlatformUsage platformUsage = new PlatformUsage();
+        platformUsage.setVisible(true);
         this.hide();
     }//GEN-LAST:event_btnPlatUsageActionPerformed
+
+    private void btnEngTypesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEngTypesActionPerformed
+        // TODO add your handling code here:
+        EngagementType engagementType = new EngagementType();
+        engagementType.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_btnEngTypesActionPerformed
+
+    private void btnContentTypesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContentTypesActionPerformed
+        // TODO add your handling code here:
+        ContentType contentType = new ContentType();
+        contentType.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_btnContentTypesActionPerformed
+
+
 
     /**
      * @param args the command line arguments
@@ -287,7 +326,6 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JButton btnPinning;
     private javax.swing.JButton btnPlatUsage;
     private javax.swing.JButton btnPlatform;
-    private javax.swing.JButton btnPost;
     private javax.swing.JButton btnPostCount;
     private javax.swing.JButton btnPostEng;
     private javax.swing.JButton btnUser;
@@ -298,5 +336,6 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton post;
     // End of variables declaration//GEN-END:variables
 }

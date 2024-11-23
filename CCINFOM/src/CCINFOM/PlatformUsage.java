@@ -30,11 +30,6 @@ import java.util.Vector;
  * @author Asus
  */
 public class PlatformUsage extends javax.swing.JFrame {
-    
-    private static final String username = "root";
-    private static final String password = "Mypassword";
-    private static final String connURL = "jdbc:mysql://localhost:3306/db_socmed";
-    
     /**
      * Creates new form PlatformUsage
      */
@@ -47,7 +42,7 @@ public class PlatformUsage extends javax.swing.JFrame {
         int colCounts;
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection sqlConn = DriverManager.getConnection(connURL, username, password);
+            Connection sqlConn = DatabaseConnection.getConnection();
             String query = "SELECT pl.platform_name, COUNT(DISTINCT a.account_id), COUNT(DISTINCT po.post_id) "
                     + "FROM accounts a "
                     + "LEFT JOIN posts po ON a.account_id = po.account_id "
