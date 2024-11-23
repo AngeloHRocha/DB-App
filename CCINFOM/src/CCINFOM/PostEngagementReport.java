@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,21 +27,9 @@ public class PostEngagementReport extends javax.swing.JFrame {
      */
     public PostEngagementReport() {
         initComponents();
+        generateEngagementReport();
     }
-    
-    private ArrayList<Integer> returnCalendar(){
-        ArrayList<Integer> dateList = new ArrayList<Integer>();
-        
-        Date dateSelected = engagementDate.getDate();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dateSelected);
-        
-        dateList.add(calendar.get(Calendar.DAY_OF_MONTH));
-        dateList.add(calendar.get(Calendar.MONTH) + 1);
-        dateList.add(calendar.get(Calendar.YEAR));
-        
-        return dateList;
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -58,9 +47,6 @@ public class PostEngagementReport extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         reportTable = new javax.swing.JTable();
-        jLabel4 = new javax.swing.JLabel();
-        engagementDate = new com.toedter.calendar.JCalendar();
-        generate = new javax.swing.JButton();
         generate1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -72,10 +58,10 @@ public class PostEngagementReport extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 36)); // NOI18N
         jLabel1.setText("Post Engagement Report");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 470, 60));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 470, 60));
 
         jLabel2.setFont(new java.awt.Font("Microsoft YaHei UI", 2, 14)); // NOI18N
-        jLabel2.setText("how many engagements a post has garnered for a given date ");
+        jLabel2.setText("how many engagements each post has garnered ");
 
         jLabel3.setFont(new java.awt.Font("Microsoft YaHei UI", 2, 14)); // NOI18N
         jLabel3.setText("This report aggregates data from the Post and Engagement Records to analyze    ");
@@ -85,11 +71,11 @@ public class PostEngagementReport extends javax.swing.JFrame {
 
             },
             new String [] {
-                "post_id", "account_name", "date", "engagement_count"
+                "post_id", "account_name", "engagement_count"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -97,17 +83,6 @@ public class PostEngagementReport extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(reportTable);
-
-        jLabel4.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 22)); // NOI18N
-        jLabel4.setText("Date");
-
-        generate.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 20)); // NOI18N
-        generate.setText("Generate Report");
-        generate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateActionPerformed(evt);
-            }
-        });
 
         generate1.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 20)); // NOI18N
         generate1.setText("Exit");
@@ -121,66 +96,46 @@ public class PostEngagementReport extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(214, 214, 214)
-                            .addComponent(jLabel2))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(167, 167, 167)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(93, 93, 93))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(27, Short.MAX_VALUE)
+                        .addGap(54, 54, 54)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(generate)
-                                .addGap(31, 31, 31)
-                                .addComponent(generate1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(engagementDate, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                            .addComponent(jLabel3)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 621, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(259, 259, 259)
+                        .addComponent(generate1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(33, 33, 33)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(engagementDate, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(generate, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(generate1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(generate1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,60 +145,52 @@ public class PostEngagementReport extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void generateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateActionPerformed
-        ArrayList<Integer> dateList = returnCalendar();
-        String date = dateList.get(2) + "-" + dateList.get(1) + "-" + dateList.get(0);  // YYYY-MM-DD format
-
-        int colCounts;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); 
-            Connection sqlConn = DatabaseConnection.getConnection();
-
-            // SQL query to select data and filter based on the selected date
-            String query = "SELECT pl.platform_name, a.account_name, po.post_date, COUNT(e.engagement_id) AS engagement_count "
-                         + "FROM accounts a "
-                         + "LEFT JOIN posts po ON a.account_id = po.account_id "
-                         + "LEFT JOIN platforms pl ON a.platform_id = pl.platform_id "
-                         + "LEFT JOIN engagements e ON po.post_id = e.post_id "
-                         + "WHERE po.post_date = ? "
-                         + "GROUP BY pl.platform_name, a.account_name, po.post_date";
-
-            // Prepare the SQL statement and set the date parameter
-            PreparedStatement pst = sqlConn.prepareStatement(query);
-            pst.setString(1, date);
-
-            // Execute the query and fetch results
-            ResultSet rs = pst.executeQuery();
-            ResultSetMetaData st = rs.getMetaData();
-
-            // Set up the table model to display results
-            DefaultTableModel recordTable = (DefaultTableModel) reportTable.getModel();
-            recordTable.setRowCount(0); 
-
-            colCounts = st.getColumnCount();  
-
-            // Iterate through the result set and populate the table
-            while (rs.next()) {
-                Vector columnData = new Vector();
-
-                for (int j = 1; j <= colCounts; j++) {
-                    columnData.add(rs.getObject(j));
-                }
-
-                recordTable.addRow(columnData);
-            }
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
-    }//GEN-LAST:event_generateActionPerformed
-
     private void generate1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generate1ActionPerformed
         // TODO add your handling code here:
         HomePage hp = new HomePage();
         this.dispose();
         hp.setVisible(true);
     }//GEN-LAST:event_generate1ActionPerformed
+
+    private void generateEngagementReport() {
+        int colCount;
+        try {
+            // Load the MySQL driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // Establish connection
+            Connection sqlConn = DatabaseConnection.getConnection();
+
+            // SQL query to get post_id, account_name, and engagement count, sorted by descending engagement count
+            PreparedStatement pst = sqlConn.prepareStatement(
+                "SELECT p.post_id, a.account_name, COUNT(e.engagement_id) AS engagement_count " +
+                "FROM posts p " +
+                "JOIN accounts a ON p.account_id = a.account_id " +
+                "LEFT JOIN engagements e ON p.post_id = e.post_id " +
+                "GROUP BY p.post_id, a.account_name " +
+                "ORDER BY engagement_count DESC"
+            );
+
+            // Execute query and get metadata
+            ResultSet rs = pst.executeQuery();
+            ResultSetMetaData st = rs.getMetaData();
+            colCount = st.getColumnCount();
+
+            // Prepare the table model
+            DefaultTableModel recordTable = (DefaultTableModel) reportTable.getModel();
+            recordTable.setRowCount(0);
+
+            // Populate the table with the results
+            while (rs.next()) {
+                Vector<Object> columnData = new Vector<>();
+                for (int j = 1; j <= colCount; j++) {
+                    columnData.add(rs.getObject(j));
+                }
+                recordTable.addRow(columnData);
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -281,13 +228,10 @@ public class PostEngagementReport extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JCalendar engagementDate;
-    private javax.swing.JButton generate;
     private javax.swing.JButton generate1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
