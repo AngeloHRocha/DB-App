@@ -28,6 +28,7 @@ public class Engagements extends javax.swing.JFrame {
      */
     public Engagements() {
         initComponents();
+        updateDB();
     }
     
     private void updateDB(){
@@ -148,11 +149,11 @@ public class Engagements extends javax.swing.JFrame {
 
             },
             new String [] {
-                "engagement_id", "post_id", "account_id", "engagement_type_id", "engagement_content", "engagement_date"
+                "engagement_id", "post_id", "engagement_content", "engagement_date", "engagement_type_id", "account_id"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
