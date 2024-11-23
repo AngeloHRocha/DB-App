@@ -4,6 +4,15 @@
  */
 package CCINFOM;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author angelo
@@ -15,7 +24,38 @@ public class EngagementType extends javax.swing.JFrame {
      */
     public EngagementType() {
         initComponents();
+        updateDB();
     }
+    
+    private void updateDB(){
+        int colCount;
+        
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection sqlConn = DatabaseConnection.getConnection();
+            PreparedStatement pst = sqlConn.prepareStatement("SELECT * FROM engagement_types");
+            
+            ResultSet rs = pst.executeQuery();
+            ResultSetMetaData st = rs.getMetaData();
+            
+            colCount = st.getColumnCount();
+            DefaultTableModel recordTable = (DefaultTableModel)jTable1.getModel();
+            recordTable.setRowCount(0);
+            
+            while(rs.next()){
+                Vector columnData = new Vector();
+                for(int j = 1; j <= colCount; j++){
+                    columnData.add(rs.getObject(j));
+                }
+                recordTable.addRow(columnData);
+            }
+            
+            
+        }catch(ClassNotFoundException | SQLException ex){
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -105,7 +145,7 @@ public class EngagementType extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
