@@ -4,11 +4,16 @@
  */
 package CCINFOM;
 
+import CCINFOM.DatabaseConnection;
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -18,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  * @author angelo
  */
 public class EngagementType extends javax.swing.JFrame {
-
+    int hasText = 0;
     /**
      * Creates new form EngagementType
      */
@@ -39,7 +44,7 @@ public class EngagementType extends javax.swing.JFrame {
             ResultSetMetaData st = rs.getMetaData();
             
             colCount = st.getColumnCount();
-            DefaultTableModel recordTable = (DefaultTableModel)jTable1.getModel();
+            DefaultTableModel recordTable = (DefaultTableModel)tableEngType.getModel();
             recordTable.setRowCount(0);
             
             while(rs.next()){
@@ -71,11 +76,11 @@ public class EngagementType extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        ContainsText = new javax.swing.JCheckBox();
+        txtEngType = new javax.swing.JTextField();
+        btnContainsText = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableEngType = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         Delete = new javax.swing.JButton();
         Update = new javax.swing.JButton();
@@ -95,17 +100,17 @@ public class EngagementType extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 4));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtEngType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtEngTypeActionPerformed(evt);
             }
         });
 
-        ContainsText.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 22)); // NOI18N
-        ContainsText.setText("Contains Text");
-        ContainsText.addActionListener(new java.awt.event.ActionListener() {
+        btnContainsText.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 22)); // NOI18N
+        btnContainsText.setText("Contains Text");
+        btnContainsText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ContainsTextActionPerformed(evt);
+                btnContainsTextActionPerformed(evt);
             }
         });
 
@@ -120,9 +125,9 @@ public class EngagementType extends javax.swing.JFrame {
                 .addGap(47, 47, 47)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtEngType, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ContainsText)
+                .addComponent(btnContainsText)
                 .addGap(38, 38, 38))
         );
         jPanel4Layout.setVerticalGroup(
@@ -130,13 +135,13 @@ public class EngagementType extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(64, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ContainsText)
+                    .addComponent(txtEngType, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnContainsText)
                     .addComponent(jLabel2))
                 .addGap(60, 60, 60))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableEngType.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -152,7 +157,12 @@ public class EngagementType extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        tableEngType.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableEngTypeMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableEngType);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 4));
 
@@ -279,7 +289,30 @@ public class EngagementType extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddActionPerformed
-        // TODO add your handling code here:
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection sqlConn = DatabaseConnection.getConnection();
+            PreparedStatement pst = sqlConn.prepareStatement("INSERT INTO engagement_types(type_name, contains_text)"
+                    + "VALUE(?, ?)");
+            
+            String name = txtEngType.getText();
+               
+            if(name.isEmpty()){
+                JOptionPane.showMessageDialog(this, "Complete the information needed.", "Warning", JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                pst.setString(1, name);
+                pst.setInt(2, hasText);
+
+                
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Record Added!");
+                updateDB();
+            }
+            
+        }catch(HeadlessException | ClassNotFoundException | SQLException ex){
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }     
     }//GEN-LAST:event_AddActionPerformed
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
@@ -291,22 +324,56 @@ public class EngagementType extends javax.swing.JFrame {
 
     private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_UpdateActionPerformed
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
-        // TODO add your handling code here:
-        HomePage hp = new HomePage();
-        this.dispose();
-        hp.setVisible(true);
+        DefaultTableModel recordTable = (DefaultTableModel)tableEngType.getModel();
+        int selectedRow = tableEngType.getSelectedRow();
+        
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection sqlConn = DatabaseConnection.getConnection();
+            if(JOptionPane.showConfirmDialog(this, "Confirm if you want to delete record.", "Message", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION){
+                PreparedStatement pst = sqlConn.prepareStatement("DELETE FROM engagement_types WHERE engagement_type_id=?");
+                
+                pst.setInt(1, Integer.parseInt(recordTable.getValueAt(selectedRow, recordTable.findColumn("engagement_type_id")).toString()));
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Record Deleted!");
+                updateDB();
+            }
+        }catch(HeadlessException | ClassNotFoundException | NumberFormatException | SQLException ex){
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }//GEN-LAST:event_DeleteActionPerformed
 
-    private void ContainsTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContainsTextActionPerformed
+    private void btnContainsTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContainsTextActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_ContainsTextActionPerformed
+        if(hasText == 1)
+            hasText = 0;
+        else
+            hasText = 1;
+    }//GEN-LAST:event_btnContainsTextActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtEngTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEngTypeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtEngTypeActionPerformed
+
+    private void tableEngTypeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableEngTypeMouseClicked
+        DefaultTableModel recordTable = (DefaultTableModel)tableEngType.getModel();
+        int selectedRow = tableEngType.getSelectedRow();
+        
+        try{
+            
+            txtEngType.setText(recordTable.getValueAt(selectedRow, recordTable.findColumn("type_name")).toString());
+            if("1".equals(recordTable.getValueAt(selectedRow, recordTable.findColumn("contains_text")).toString()))
+                btnContainsText.setEnabled(true);
+            else
+                btnContainsText.setEnabled(false);
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_tableEngTypeMouseClicked
 
     /**
      * @param args the command line arguments
@@ -345,10 +412,10 @@ public class EngagementType extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Add;
-    private javax.swing.JCheckBox ContainsText;
     private javax.swing.JButton Delete;
     private javax.swing.JButton Exit;
     private javax.swing.JButton Update;
+    private javax.swing.JCheckBox btnContainsText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -357,7 +424,7 @@ public class EngagementType extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tableEngType;
+    private javax.swing.JTextField txtEngType;
     // End of variables declaration//GEN-END:variables
 }
