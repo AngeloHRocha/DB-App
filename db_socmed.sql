@@ -85,12 +85,12 @@ DROP TABLE IF EXISTS `engagement_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `engagement_types` (
-  `engagement_type_id` int(10) NOT NULL AUTO_INCREMENT,
+  `engagement_type_id` int(10) NOT NULL AUTO_INCREMENT=,
   `type_name` varchar(45) NOT NULL,
   `contains_text` tinyint NOT NULL,
   PRIMARY KEY (`engagement_type_id`),
   UNIQUE KEY `type_name_UNIQUE` (`type_name`)
-) AUTO_INCREMENT = 5211011110 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) AUTO_INCREMENT = 1 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +123,7 @@ CREATE TABLE `engagements` (
   CONSTRAINT `engagement_type_id` FOREIGN KEY (`engagement_type_id`) REFERENCES `engagement_types` (`engagement_type_id`),
   CONSTRAINT `fk_account_id` FOREIGN KEY (`account_id`) REFERENCES `Accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_post_id` FOREIGN KEY (`post_id`) REFERENCES `Posts` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) AUTO_INCREMENT = 9111011190 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) AUTO_INCREMENT = 100 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
