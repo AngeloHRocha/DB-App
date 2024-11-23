@@ -135,6 +135,11 @@ public class HomePage extends javax.swing.JFrame {
         btnPostCount.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
         btnPostCount.setText("Post Count Report ");
         btnPostCount.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        btnPostCount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPostCountActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnPostCount, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 70, 310, 40));
 
         btnPlatUsage.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
@@ -312,6 +317,12 @@ public class HomePage extends javax.swing.JFrame {
         report.setVisible(true);
         this.hide();
     }//GEN-LAST:event_btnConFreActionPerformed
+
+    private void btnPostCountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPostCountActionPerformed
+        PostCount pc = new PostCount();
+        pc.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_btnPostCountActionPerformed
 
 
 

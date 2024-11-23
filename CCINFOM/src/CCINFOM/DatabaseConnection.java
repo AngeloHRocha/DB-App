@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     private static final String url = "jdbc:mysql://localhost:3306/db_socmed";
     private static final String user = "root";
-    private static final String password = "Pupayumi^&1"; // replace with your password
+    private static final String password = "MyPASSWORD"; // replace with your password
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, user, password);
