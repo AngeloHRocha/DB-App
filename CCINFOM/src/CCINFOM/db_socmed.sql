@@ -205,7 +205,7 @@ CREATE TABLE `posts` (
   `post_id` int(9) NOT NULL AUTO_INCREMENT,
   `account_id` int(6) NOT NULL,
   `post_date` date NOT NULL,
-  `visibility` varchar(20) NOT NULL,
+  `visibility` enum("Public", "Private", "Friend_Only", "Restricted") NOT NULL,
   PRIMARY KEY (`post_id`),
   KEY `account_id_idx` (`account_id`),
   CONSTRAINT `account_id` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`account_id`)
