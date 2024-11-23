@@ -314,7 +314,7 @@ public class Engagements extends javax.swing.JFrame {
     private void engageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_engageActionPerformed
 
     ArrayList<Integer> dateList = returnCalendar();
-    Boolean containsText = false;  
+    int containsText = 0;  
 
     String post_id = postId.getText();
     String account_id = accountId.getText();
@@ -346,7 +346,7 @@ public class Engagements extends javax.swing.JFrame {
         ResultSet rs = pst.executeQuery();
 
         if (rs.next()) {
-            containsText = rs.getBoolean("contains_text");
+            containsText = rs.getInt("contains_text");
         } else {
             // If no matching engagement_type_id is found, show an error
             JOptionPane.showMessageDialog(this, "Invalid engagement type ID.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -355,7 +355,7 @@ public class Engagements extends javax.swing.JFrame {
 
         // Check if engagement_type_id exists and validate content rules
         if (engagement_type_id > 0) {
-            if (!containsText && !engagement_content.isEmpty()) {
+            if (containsText == 0 && !engagement_content.isEmpty()) {
                 // If contains_text is false and engagement_content is not empty, show an error
                 JOptionPane.showMessageDialog(this, "This engagement type does not allow content.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;  
