@@ -355,13 +355,20 @@ public class Engagements extends javax.swing.JFrame {
 
         // Check if engagement_type_id exists and validate content rules
         if (engagement_type_id > 0) {
+            // Check if engagement_content violates the rules based on contains_text
             if (containsText == 0 && !engagement_content.isEmpty()) {
-                // If contains_text is false and engagement_content is not empty, show an error
+                // If contains_text is false (0) and engagement_content is not empty, show an error
                 JOptionPane.showMessageDialog(this, "This engagement type does not allow content.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;  
             }
 
-            if (post_id.isEmpty() || account_id.isEmpty() || engagement_content.isEmpty() || date.isEmpty()) {
+            // Allow engagement_content to be empty only if contains_text is 0
+            if (containsText == 1 && engagement_content.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Content is required for this engagement type.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (post_id.isEmpty() || account_id.isEmpty() || date.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Complete the information needed.", "Warning", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -374,7 +381,11 @@ public class Engagements extends javax.swing.JFrame {
             insertPst.setInt(1, Integer.parseInt(post_id)); 
             insertPst.setInt(2, Integer.parseInt(account_id));
             insertPst.setInt(3, engagement_type_id);  
-            insertPst.setString(4, engagement_content);  
+            if (containsText == 0) {
+                insertPst.setNull(4, java.sql.Types.VARCHAR);  // Set to NULL if contains_text is 0
+            } else {
+                insertPst.setString(4, engagement_content);  // Use the provided engagement content
+            }
             insertPst.setString(5, date);  
 
             insertPst.executeUpdate();
