@@ -41,8 +41,8 @@ public class HomePage extends javax.swing.JFrame {
         btnPlatUsage = new javax.swing.JButton();
         btnPostEng = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        btnEngage = new javax.swing.JButton();
-        btnContent = new javax.swing.JButton();
+        engage = new javax.swing.JButton();
+        content = new javax.swing.JButton();
         btnCreate = new javax.swing.JButton();
         btnPinning = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -125,6 +125,11 @@ public class HomePage extends javax.swing.JFrame {
         btnConFre.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
         btnConFre.setText("Content Frequency Report");
         btnConFre.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        btnConFre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConFreActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnConFre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, 310, 40));
 
         btnPostCount.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
@@ -145,6 +150,11 @@ public class HomePage extends javax.swing.JFrame {
         btnPostEng.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
         btnPostEng.setText("Posts Engagement Report");
         btnPostEng.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        btnPostEng.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPostEngActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnPostEng, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, 310, 40));
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 980, 190));
@@ -155,29 +165,29 @@ public class HomePage extends javax.swing.JFrame {
         jLabel3.setText("TRANSACTIONS");
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 310, -1));
 
-        btnEngage.setBackground(new java.awt.Color(152, 150, 150));
-        btnEngage.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
-        btnEngage.setForeground(new java.awt.Color(255, 255, 255));
-        btnEngage.setText("Engaging with a Post");
-        btnEngage.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-        btnEngage.addActionListener(new java.awt.event.ActionListener() {
+        engage.setBackground(new java.awt.Color(152, 150, 150));
+        engage.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
+        engage.setForeground(new java.awt.Color(255, 255, 255));
+        engage.setText("Engaging with a Post");
+        engage.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        engage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEngageActionPerformed(evt);
+                engageActionPerformed(evt);
             }
         });
-        jPanel2.add(btnEngage, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 350, 310, 40));
+        jPanel2.add(engage, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 350, 310, 40));
 
-        btnContent.setBackground(new java.awt.Color(152, 150, 150));
-        btnContent.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
-        btnContent.setForeground(new java.awt.Color(255, 255, 255));
-        btnContent.setText("Assigning Content to a Post");
-        btnContent.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-        btnContent.addActionListener(new java.awt.event.ActionListener() {
+        content.setBackground(new java.awt.Color(152, 150, 150));
+        content.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
+        content.setForeground(new java.awt.Color(255, 255, 255));
+        content.setText("Assigning Content to a Post");
+        content.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        content.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnContentActionPerformed(evt);
+                contentActionPerformed(evt);
             }
         });
-        jPanel2.add(btnContent, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 280, 310, 40));
+        jPanel2.add(content, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 280, 310, 40));
 
         btnCreate.setBackground(new java.awt.Color(152, 150, 150));
         btnCreate.setFont(new java.awt.Font("PMingLiU-ExtB", 3, 18)); // NOI18N
@@ -221,13 +231,20 @@ public class HomePage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEngageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEngageActionPerformed
+    private void engageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_engageActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnEngageActionPerformed
+        Engagements engagements = new Engagements();
+        engagements.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_engageActionPerformed
 
-    private void btnContentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContentActionPerformed
+    private void contentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnContentActionPerformed
+        PostContent content = new PostContent();
+        content.setVisible(true);
+        this.hide();
+            
+    }//GEN-LAST:event_contentActionPerformed
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
         CreateAccount ac = new CreateAccount();
@@ -237,6 +254,9 @@ public class HomePage extends javax.swing.JFrame {
 
     private void btnPinningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPinningActionPerformed
         // TODO add your handling code here:
+        PinningPost pin = new PinningPost();
+        pin.setVisible(true);
+        this.hide();
     }//GEN-LAST:event_btnPinningActionPerformed
 
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
@@ -279,6 +299,20 @@ public class HomePage extends javax.swing.JFrame {
         this.hide();
     }//GEN-LAST:event_btnContentTypesActionPerformed
 
+    private void btnPostEngActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPostEngActionPerformed
+        // TODO add your handling code here:
+        PostEngagementReport engagementReport = new PostEngagementReport();
+        engagementReport.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_btnPostEngActionPerformed
+
+    private void btnConFreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConFreActionPerformed
+        // TODO add your handling code here:
+        ContentFrequencyReport report = new ContentFrequencyReport();
+        report.setVisible(true);
+        this.hide();
+    }//GEN-LAST:event_btnConFreActionPerformed
+
 
 
     /**
@@ -318,17 +352,17 @@ public class HomePage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConFre;
-    private javax.swing.JButton btnContent;
     private javax.swing.JButton btnContentTypes;
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnEngTypes;
-    private javax.swing.JButton btnEngage;
     private javax.swing.JButton btnPinning;
     private javax.swing.JButton btnPlatUsage;
     private javax.swing.JButton btnPlatform;
     private javax.swing.JButton btnPostCount;
     private javax.swing.JButton btnPostEng;
     private javax.swing.JButton btnUser;
+    private javax.swing.JButton content;
+    private javax.swing.JButton engage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

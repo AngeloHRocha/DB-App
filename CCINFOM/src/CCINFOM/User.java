@@ -44,7 +44,7 @@ public class User extends javax.swing.JFrame {
         int colCounts;
         
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             Connection sqlConn = DatabaseConnection.getConnection();
             PreparedStatement pst = sqlConn.prepareStatement("SELECT * FROM users");
             ResultSet rs = pst.executeQuery();
@@ -72,7 +72,7 @@ public class User extends javax.swing.JFrame {
         ArrayList<Integer> dateList = new ArrayList<Integer>();
         
         // get the date selected by the user
-        Date dateSelected = calendarDate.getDate();
+        Date dateSelected = calendarBday.getDate();
         Calendar calendar = Calendar.getInstance();
         // set the calendar's date to the user selected date
         calendar.setTime(dateSelected);
@@ -106,13 +106,13 @@ public class User extends javax.swing.JFrame {
         label3 = new javax.swing.JLabel();
         tfEmail = new javax.swing.JTextField();
         label4 = new javax.swing.JLabel();
+        calendarBday = new com.toedter.calendar.JCalendar();
         btnDelete = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
         btnExit = new javax.swing.JButton();
-        calendarDate = new com.toedter.calendar.JCalendar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -150,6 +150,9 @@ public class User extends javax.swing.JFrame {
         label4.setText("Birthday");
         jPanel2.add(label4, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 40, -1, 33));
 
+        calendarBday.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 3));
+        jPanel2.add(calendarBday, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 80, 375, 158));
+
         btnDelete.setFont(new java.awt.Font("Perpetua Titling MT", 1, 18)); // NOI18N
         btnDelete.setText("Delete");
         btnDelete.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
@@ -158,7 +161,7 @@ public class User extends javax.swing.JFrame {
                 btnDeleteActionPerformed(evt);
             }
         });
-        jPanel2.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 300, 150, 40));
+        jPanel2.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 300, 150, -1));
 
         btnAdd.setFont(new java.awt.Font("Perpetua Titling MT", 1, 18)); // NOI18N
         btnAdd.setText("Add");
@@ -168,17 +171,17 @@ public class User extends javax.swing.JFrame {
                 btnAddActionPerformed(evt);
             }
         });
-        jPanel2.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 300, 150, 40));
+        jPanel2.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 150, -1));
 
         btnUpdate.setFont(new java.awt.Font("Perpetua Titling MT", 1, 18)); // NOI18N
-        btnUpdate.setText("Update");
+        btnUpdate.setText("UPDATE");
         btnUpdate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
             }
         });
-        jPanel2.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 150, 40));
+        jPanel2.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 300, 150, -1));
 
         userTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -216,18 +219,17 @@ public class User extends javax.swing.JFrame {
             userTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, 850, 220));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, 850, 220));
 
         btnExit.setFont(new java.awt.Font("Perpetua Titling MT", 1, 18)); // NOI18N
-        btnExit.setText("Exit");
+        btnExit.setText("EXIT");
         btnExit.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExitActionPerformed(evt);
             }
         });
-        jPanel2.add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 300, 150, 40));
-        jPanel2.add(calendarDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 80, 400, 190));
+        jPanel2.add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 300, 150, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 930, 600));
 
@@ -278,7 +280,7 @@ public class User extends javax.swing.JFrame {
                 pst.setString(4, dateList.get(2) + "-" + dateList.get(1) + "-" + dateList.get(0));
             
                 pst.executeUpdate();
-                JOptionPane.showMessageDialog(this, "Record Added!", "User", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(this, "Record Added!");
                 updateDB();
             }
         }catch(HeadlessException | ClassNotFoundException | SQLException ex){
@@ -306,7 +308,7 @@ public class User extends javax.swing.JFrame {
                 pst.setInt(1, Integer.parseInt(recordTable.getValueAt(selectedRow, recordTable.findColumn("user_id")).toString()));
                 pst.executeUpdate();
                 
-                JOptionPane.showMessageDialog(this, "Record Deleted!", "Message", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(this, "Record Deleted!");
                 updateDB();
             }
         }catch(HeadlessException | ClassNotFoundException | NumberFormatException | SQLException ex){
@@ -361,7 +363,7 @@ public class User extends javax.swing.JFrame {
                 
                 pst.executeUpdate();
                     
-                JOptionPane.showMessageDialog(this, "Record Updated!", "User", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(this, "Record Updated!");
                 updateDB();
                 userTable.setRowSelectionInterval(selectedRow, selectedRow);
             }    
@@ -380,7 +382,7 @@ public class User extends javax.swing.JFrame {
             // convert date string to date object
             Date date = dateFormat.parse(dateString);
             // set the date to the calendar
-            calendarDate.setDate(date);
+            calendarBday.setDate(date);
             tfFname.setText(recordTable.getValueAt(selectedRow, recordTable.findColumn("first_name")).toString());
             tfLname.setText(recordTable.getValueAt(selectedRow, recordTable.findColumn("last_name")).toString());
             tfEmail.setText(recordTable.getValueAt(selectedRow, recordTable.findColumn("email")).toString());
@@ -430,7 +432,7 @@ public class User extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnUpdate;
-    private com.toedter.calendar.JCalendar calendarDate;
+    private com.toedter.calendar.JCalendar calendarBday;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

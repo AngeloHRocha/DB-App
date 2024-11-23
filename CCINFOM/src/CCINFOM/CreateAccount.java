@@ -301,7 +301,7 @@ public class CreateAccount extends javax.swing.JFrame {
                         pst.setInt(5, cbPrivate.isSelected()? 1 : 0);
                         
                         pst.executeUpdate();
-                        JOptionPane.showMessageDialog(this, "Record Added!", "Account", JOptionPane.OK_OPTION);
+                        JOptionPane.showMessageDialog(this, "Record Added!");
                         updateDB();
                     }
                 }
