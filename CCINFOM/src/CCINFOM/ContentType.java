@@ -4,7 +4,6 @@
  */
 package CCINFOM;
 
-import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +26,34 @@ public class ContentType extends javax.swing.JFrame {
         initComponents();
         updateDB();
     }
+    
+    private void updateDB(){
+        int colCount;
+        
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection sqlConn = DatabaseConnection.getConnection();
+            PreparedStatement pst = sqlConn.prepareStatement("SELECT * FROM content_types");
+            
+            ResultSet rs = pst.executeQuery();
+            ResultSetMetaData st = rs.getMetaData();
+            
+            colCount = st.getColumnCount();
+            DefaultTableModel recordTable = (DefaultTableModel)jTable1.getModel();
+            recordTable.setRowCount(0);
+            
+            while(rs.next()){
+                Vector columnData = new Vector();
+                for(int j = 1; j <= colCount; j++){
+                    columnData.add(rs.getObject(j));
+                }
+                recordTable.addRow(columnData);
+            }
+            
+        }catch(ClassNotFoundException | SQLException ex){
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,11 +74,11 @@ public class ContentType extends javax.swing.JFrame {
         Update = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        txtConType = new javax.swing.JTextField();
-        txtMaxSize = new javax.swing.JTextField();
+        tfName1 = new javax.swing.JTextField();
+        tfName2 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tableConType = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -159,8 +186,8 @@ public class ContentType extends javax.swing.JFrame {
                     .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtConType, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtMaxSize, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfName1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfName2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(125, 125, 125))
         );
         jPanel4Layout.setVerticalGroup(
@@ -168,16 +195,16 @@ public class ContentType extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtConType, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfName1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtMaxSize, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfName2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18))
         );
 
-        tableConType.setModel(new javax.swing.table.DefaultTableModel(
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -200,12 +227,7 @@ public class ContentType extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tableConType.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableConTypeMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tableConType);
+        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -252,80 +274,12 @@ public class ContentType extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void updateDB(){
-        int colCount;
-        
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection sqlConn = DatabaseConnection.getConnection();
-            PreparedStatement pst = sqlConn.prepareStatement("SELECT * FROM content_types");
-            
-            ResultSet rs = pst.executeQuery();
-            ResultSetMetaData st = rs.getMetaData();
-            
-            colCount = st.getColumnCount();
-            DefaultTableModel recordTable = (DefaultTableModel)tableConType.getModel();
-            recordTable.setRowCount(0);
-            
-            while(rs.next()){
-                Vector columnData = new Vector();
-                for(int j = 1; j <= colCount; j++){
-                    columnData.add(rs.getObject(j));
-                }
-                recordTable.addRow(columnData);
-            }
-            
-            
-        }catch(ClassNotFoundException | SQLException ex){
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
-    }
-    
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
-        DefaultTableModel recordTable = (DefaultTableModel)tableConType.getModel();
-        int selectedRow = tableConType.getSelectedRow();
-        
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection sqlConn = DatabaseConnection.getConnection();
-            if(JOptionPane.showConfirmDialog(this, "Confirm if you want to delete record.", "Message", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION){
-                PreparedStatement pst = sqlConn.prepareStatement("DELETE FROM content_types WHERE type_id=?");
-                
-                pst.setInt(1, Integer.parseInt(recordTable.getValueAt(selectedRow, recordTable.findColumn("type_id")).toString()));
-                pst.executeUpdate();
-                JOptionPane.showMessageDialog(this, "Record Deleted!");
-                updateDB();
-            }
-        }catch(HeadlessException | ClassNotFoundException | NumberFormatException | SQLException ex){
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
+        // TODO add your handling code here:
     }//GEN-LAST:event_DeleteActionPerformed
 
     private void AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddActionPerformed
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection sqlConn = DatabaseConnection.getConnection();
-            PreparedStatement pst = sqlConn.prepareStatement("INSERT INTO content_types(content_type, max_filesize_mb)"
-                    + "VALUE(?, ?)");
-            
-            String name = txtConType.getText();
-            int size = Integer.parseInt(txtMaxSize.getText());
-            if(name.isEmpty() || size == 0){
-                JOptionPane.showMessageDialog(this, "Complete the information needed.", "Warning", JOptionPane.ERROR_MESSAGE);
-            }
-            else{
-                pst.setString(1, name);
-                pst.setInt(2, size);
-
-                
-                pst.executeUpdate();
-                JOptionPane.showMessageDialog(this, "Record Added!");
-                updateDB();
-            }
-            
-        }catch(HeadlessException | ClassNotFoundException | SQLException ex){
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
+        // TODO add your handling code here:
     }//GEN-LAST:event_AddActionPerformed
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
@@ -338,19 +292,6 @@ public class ContentType extends javax.swing.JFrame {
     private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_UpdateActionPerformed
-
-    private void tableConTypeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableConTypeMouseClicked
-        DefaultTableModel recordTable = (DefaultTableModel)tableConType.getModel();
-        int selectedRow = tableConType.getSelectedRow();
-        
-        try{
-            
-            txtConType.setText(recordTable.getValueAt(selectedRow, recordTable.findColumn("content_type")).toString());
-            txtMaxSize.setText(recordTable.getValueAt(selectedRow, recordTable.findColumn("max_filesize_mb")).toString());
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
-    }//GEN-LAST:event_tableConTypeMouseClicked
 
     /**
      * @param args the command line arguments
@@ -400,8 +341,8 @@ public class ContentType extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tableConType;
-    private javax.swing.JTextField txtConType;
-    private javax.swing.JTextField txtMaxSize;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField tfName1;
+    private javax.swing.JTextField tfName2;
     // End of variables declaration//GEN-END:variables
 }

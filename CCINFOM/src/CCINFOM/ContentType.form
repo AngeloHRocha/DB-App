@@ -234,8 +234,8 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtConType" min="-2" pref="350" max="-2" attributes="0"/>
-                          <Component id="txtMaxSize" min="-2" pref="350" max="-2" attributes="0"/>
+                          <Component id="tfName1" min="-2" pref="350" max="-2" attributes="0"/>
+                          <Component id="tfName2" min="-2" pref="350" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
                   </Group>
@@ -246,12 +246,12 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace pref="31" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtConType" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                          <Component id="tfName1" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
                           <Component id="jLabel8" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtMaxSize" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                          <Component id="tfName2" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
                           <Component id="jLabel7" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
@@ -268,9 +268,9 @@
                 <Property name="text" type="java.lang.String" value="Max Filesize (mb)"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtConType">
+            <Component class="javax.swing.JTextField" name="tfName1">
             </Component>
-            <Component class="javax.swing.JTextField" name="txtMaxSize">
+            <Component class="javax.swing.JTextField" name="tfName2">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
               <Properties>
@@ -289,7 +289,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tableConType">
+            <Component class="javax.swing.JTable" name="jTable1">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="3" rowCount="0">
@@ -299,9 +299,6 @@
                   </Table>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableConTypeMouseClicked"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>

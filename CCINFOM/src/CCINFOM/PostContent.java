@@ -4,7 +4,6 @@
  */
 package CCINFOM;
 
-import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +26,34 @@ public class PostContent extends javax.swing.JFrame {
         initComponents();
         updateDB();
     }
+ 
+    private void updateDB(){
+        int colCount;
+        
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection sqlConn = DatabaseConnection.getConnection();
+            PreparedStatement pst = sqlConn.prepareStatement("SELECT * FROM post_contents");
+            
+            ResultSet rs = pst.executeQuery();
+            ResultSetMetaData st = rs.getMetaData();
+            
+            colCount = st.getColumnCount();
+            DefaultTableModel recordTable = (DefaultTableModel)jTable1.getModel();
+            recordTable.setRowCount(0);
+            
+            while(rs.next()){
+                Vector columnData = new Vector();
+                for(int j = 1; j <= colCount; j++){
+                    columnData.add(rs.getObject(j));
+                }
+                recordTable.addRow(columnData);
+            }
+            
+        }catch(ClassNotFoundException | SQLException ex){
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,21 +69,21 @@ public class PostContent extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        postId = new javax.swing.JTextField();
-        typeId = new javax.swing.JTextField();
-        title = new javax.swing.JTextField();
-        content = new javax.swing.JTextField();
-        fileSize = new javax.swing.JTextField();
+        accountId1 = new javax.swing.JTextField();
+        accountId3 = new javax.swing.JTextField();
+        accountId4 = new javax.swing.JTextField();
+        accountId = new javax.swing.JTextField();
+        accountId2 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        btnPC = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         exit = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablePC = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable();
 
         jInternalFrame1.setVisible(true);
 
@@ -113,11 +140,11 @@ public class PostContent extends javax.swing.JFrame {
                     .addComponent(jLabel7))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(postId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(typeId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(title, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(content, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fileSize, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(accountId1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(accountId3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(accountId4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(accountId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(accountId2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(113, 113, 113))
         );
         jPanel3Layout.setVerticalGroup(
@@ -126,9 +153,9 @@ public class PostContent extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(postId, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(accountId1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(typeId, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(accountId3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(22, 22, 22))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -136,26 +163,26 @@ public class PostContent extends javax.swing.JFrame {
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(accountId4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(content, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(accountId, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fileSize, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(accountId2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 4));
 
-        btnPC.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 20)); // NOI18N
-        btnPC.setText("Add Content");
-        btnPC.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 20)); // NOI18N
+        jButton1.setText("Add Content");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPCActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -175,7 +202,7 @@ public class PostContent extends javax.swing.JFrame {
                 .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(btnPC)
+                        .addComponent(jButton1)
                         .addGap(21, 21, 21))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,13 +212,13 @@ public class PostContent extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap(45, Short.MAX_VALUE)
-                .addComponent(btnPC, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(59, 59, 59))
         );
 
-        tablePC.setModel(new javax.swing.table.DefaultTableModel(
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -207,7 +234,7 @@ public class PostContent extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tablePC);
+        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -254,103 +281,9 @@ public class PostContent extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void updateDB(){
-        int colCount;
-        
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection sqlConn = DatabaseConnection.getConnection();
-            PreparedStatement pst = sqlConn.prepareStatement("SELECT * FROM post_contents");
-            
-            ResultSet rs = pst.executeQuery();
-            ResultSetMetaData st = rs.getMetaData();
-            
-            colCount = st.getColumnCount();
-            DefaultTableModel recordTable = (DefaultTableModel)tablePC.getModel();
-            recordTable.setRowCount(0);
-            
-            while(rs.next()){
-                Vector columnData = new Vector();
-                for(int j = 1; j <= colCount; j++){
-                    columnData.add(rs.getObject(j));
-                }
-                recordTable.addRow(columnData);
-            }
-            
-        }catch(ClassNotFoundException | SQLException ex){
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
-    }
-    
-    private void btnPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCActionPerformed
-        String post_id = postId.getText();
-        String content_id = typeId.getText();
-        String post_title = title.getText();  
-        String post_content = content.getText();  
-        int post_file_size = Integer.parseInt(fileSize.getText());
-        int content_type = 0, max_filesize;
-        try {
-            content_type = Integer.parseInt(content_id);  // Convert engagement_type_id to an integer
-        } catch (NumberFormatException e) {
-        // If the user enters an invalid ID, show an error
-        JOptionPane.showMessageDialog(this, "Content Type ID does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
-        
-            // Database connection
-        try {
-            // Establish connection to the database
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection sqlConn = DatabaseConnection.getConnection();
-
-            // Query to fetch contains_text for the provided engagement_type_id
-            PreparedStatement pst = sqlConn.prepareStatement("SELECT max_filesize_mb FROM content_types WHERE type_id = ?");
-            pst.setInt(1, content_type);  // Set the provided engagement_type_id
-
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                max_filesize = rs.getInt("max_filesize_mb");
-            } else {
-                // If no matching engagement_type_id is found, show an error
-                JOptionPane.showMessageDialog(this, "Invalid content type ID.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;  // Stop further processing
-            }
-
-            // Check if engagement_type_id exists and validate content rules
-            if (content_type > 0) {
-                // Check if filesize is valid
-                if (post_file_size <= 0 && post_file_size > max_filesize) {
-                    JOptionPane.showMessageDialog(this, "The filesize is too large for this content type", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;  
-                }
-                
-                if (post_id.isEmpty() || post_content.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Complete the information needed.", "Warning", JOptionPane.ERROR_MESSAGE);
-                return;
-                }
-
-                // Prepare the insert statement
-                PreparedStatement insertPst = sqlConn.prepareStatement(
-                        "INSERT INTO post_contents(post_id, type_id, title, content, file_size_mb) "
-                        + "VALUES(?, ?, ?, ?, ?)");
-
-                insertPst.setInt(1, Integer.parseInt(post_id)); 
-                insertPst.setInt(2, content_type);
-                insertPst.setString(3, post_title);  
-                insertPst.setString(4, post_content);
-                insertPst.setInt(5, post_file_size);  
-
-                insertPst.executeUpdate();
-
-                JOptionPane.showMessageDialog(this, "Record Added!", "User", JOptionPane.OK_OPTION);
-                updateDB(); 
-            }
-
-        } catch (HeadlessException | ClassNotFoundException | SQLException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
-    }
-        
-    }//GEN-LAST:event_btnPCActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
         // TODO add your handling code here:
@@ -395,10 +328,13 @@ public class PostContent extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnPC;
-    private javax.swing.JTextField content;
+    private javax.swing.JTextField accountId;
+    private javax.swing.JTextField accountId1;
+    private javax.swing.JTextField accountId2;
+    private javax.swing.JTextField accountId3;
+    private javax.swing.JTextField accountId4;
     private javax.swing.JButton exit;
-    private javax.swing.JTextField fileSize;
+    private javax.swing.JButton jButton1;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -411,9 +347,6 @@ public class PostContent extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField postId;
-    private javax.swing.JTable tablePC;
-    private javax.swing.JTextField title;
-    private javax.swing.JTextField typeId;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
