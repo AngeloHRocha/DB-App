@@ -34,7 +34,6 @@ CREATE TABLE `accounts` (
   `join_date` date NOT NULL,
   `is_private` tinyint NOT NULL,
   PRIMARY KEY (`account_id`),
-  UNIQUE KEY `account_name_UNIQUE` (`account_name`),
   KEY `platform_id_idx` (`platform_id`),
   KEY `user_id_idx` (`user_id`),
   KEY `pinned_post_id_idx` (`pinned_post_id`),
@@ -91,7 +90,7 @@ CREATE TABLE `engagement_types` (
   `contains_text` tinyint NOT NULL,
   PRIMARY KEY (`engagement_type_id`),
   UNIQUE KEY `type_name_UNIQUE` (`type_name`)
-) AUTO_INCREMENT = 5211011110 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) AUTO_INCREMENT = 1 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +123,7 @@ CREATE TABLE `engagements` (
   CONSTRAINT `engagement_type_id` FOREIGN KEY (`engagement_type_id`) REFERENCES `engagement_types` (`engagement_type_id`),
   CONSTRAINT `fk_account_id` FOREIGN KEY (`account_id`) REFERENCES `Accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_post_id` FOREIGN KEY (`post_id`) REFERENCES `Posts` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) AUTO_INCREMENT = 9111011190 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) AUTO_INCREMENT = 100 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,7 +204,7 @@ CREATE TABLE `posts` (
   `post_id` int(9) NOT NULL AUTO_INCREMENT,
   `account_id` int(6) NOT NULL,
   `post_date` date NOT NULL,
-  `visibility` enum("Public", "Private", "Friend_Only", "Restricted") NOT NULL,
+  `visibility` varchar(20) NOT NULL,
   PRIMARY KEY (`post_id`),
   KEY `account_id_idx` (`account_id`),
   CONSTRAINT `account_id` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`account_id`)
