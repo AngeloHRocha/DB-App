@@ -24,7 +24,6 @@ public class ContentFrequencyReport extends javax.swing.JFrame {
      */
     public ContentFrequencyReport() {
         initComponents();
-        updateDB();
     }
 
     /**
@@ -44,9 +43,7 @@ public class ContentFrequencyReport extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
-        accountId = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        accountId1 = new javax.swing.JTextField();
+        platformId = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -101,11 +98,13 @@ public class ContentFrequencyReport extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
         jLabel7.setText("Platform ID");
 
-        jLabel8.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
-        jLabel8.setText(" Content ID");
-
         jButton1.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 17)); // NOI18N
         jButton1.setText("Generate Report");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 20)); // NOI18N
         jButton2.setText("Exit");
@@ -125,15 +124,9 @@ public class ContentFrequencyReport extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(accountId, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(accountId1)))
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(platformId, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(25, 25, 25))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -171,15 +164,11 @@ public class ContentFrequencyReport extends javax.swing.JFrame {
                         .addGap(50, 50, 50)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(accountId1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27)
+                            .addComponent(platformId, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(accountId, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -210,32 +199,68 @@ public class ContentFrequencyReport extends javax.swing.JFrame {
         hp.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-      private void updateDB(){
-        int colCount;
-        
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection sqlConn = DatabaseConnection.getConnection();
-            PreparedStatement pst = sqlConn.prepareStatement("SELECT c.content_type, COUNT(pc.content_id)FROM content_types c LEFT JOIN post_contents pc ON c.type_id = pc.type_id GROUP BY c.content_type;");
-            
-            ResultSet rs = pst.executeQuery();
-            ResultSetMetaData st = rs.getMetaData();
-            
-            colCount = st.getColumnCount();
-            DefaultTableModel recordTable = (DefaultTableModel)jTable1.getModel();
-            recordTable.setRowCount(0);
-            
-            while(rs.next()){
-                Vector columnData = new Vector();
-                for(int j = 1; j <= colCount; j++){
-                    columnData.add(rs.getObject(j));
-                }
-                recordTable.addRow(columnData);
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try {
+            // Get and validate the Platform ID from the input
+            String platformIdText = platformId.getText().trim();
+
+            if (platformIdText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Platform ID cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            
-        }catch(ClassNotFoundException | SQLException ex){
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+
+            // Ensure the input is numeric
+            int platform_id = Integer.parseInt(platformIdText);
+
+            // Call the method to generate the report
+            updateDB(platform_id);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid numeric Platform ID.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void updateDB(int platform_id) {
+    try {
+        // Load the database driver
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        // Establish the database connection
+        Connection sqlConn = DatabaseConnection.getConnection();
+
+        // SQL query to fetch aggregated data for the specified platform ID
+        String query = "SELECT p.platform_name, ct.content_type, COALESCE(COUNT(pc.content_id), 0) AS content_count "
+                     + "FROM platforms p "
+                     + "CROSS JOIN content_types ct "
+                     + "LEFT JOIN accounts a ON p.platform_id = a.platform_id "
+                     + "LEFT JOIN posts po ON a.account_id = po.account_id "
+                     + "LEFT JOIN post_contents pc ON po.post_id = pc.post_id AND pc.type_id = ct.type_id "
+                     + "WHERE p.platform_id = ? "
+                     + "GROUP BY p.platform_name, ct.content_type";
+
+        PreparedStatement pst = sqlConn.prepareStatement(query);
+        pst.setInt(1, platform_id);
+
+        ResultSet rs = pst.executeQuery();
+        ResultSetMetaData st = rs.getMetaData();
+
+        int colCount = st.getColumnCount();
+        DefaultTableModel recordTable = (DefaultTableModel) jTable1.getModel();
+        recordTable.setRowCount(0); // Clear existing rows
+
+        // Populate the table with the result set
+        while (rs.next()) {
+            Vector<Object> columnData = new Vector<>();
+            for (int j = 1; j <= colCount; j++) {
+                columnData.add(rs.getObject(j));
+            }
+            recordTable.addRow(columnData);
+        }
+
+    } catch (ClassNotFoundException | SQLException ex) {
+        JOptionPane.showMessageDialog(this, ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+    }
     }
     /**
      * @param args the command line arguments
@@ -274,18 +299,16 @@ public class ContentFrequencyReport extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField accountId;
-    private javax.swing.JTextField accountId1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField platformId;
     // End of variables declaration//GEN-END:variables
 }
