@@ -283,72 +283,68 @@ public class PostContent extends javax.swing.JFrame {
     }
     
     private void btnPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCActionPerformed
-        String post_id = postId.getText();
-        String content_id = typeId.getText();
-        String post_title = title.getText();  
-        String post_content = content.getText();  
-        int post_file_size = Integer.parseInt(fileSize.getText());
-        int content_type = 0, max_filesize;
         try {
-            content_type = Integer.parseInt(content_id);  // Convert engagement_type_id to an integer
-        } catch (NumberFormatException e) {
-        // If the user enters an invalid ID, show an error
-        JOptionPane.showMessageDialog(this, "Content Type ID does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
-        
-            // Database connection
-        try {
-            // Establish connection to the database
-            Class.forName("com.mysql.jdbc.Driver");
+            // Get values from user input fields
+            String post_id_text = postId.getText().trim();
+            String content_type_text = typeId.getText().trim();
+            String post_title = title.getText().trim();
+            String post_content = content.getText().trim();
+            String file_size_text = fileSize.getText().trim();
+
+            // Validate that all fields are filled
+            if (post_id_text.isEmpty() || content_type_text.isEmpty() || post_title.isEmpty() 
+                    || post_content.isEmpty() || file_size_text.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Complete all the required fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            int post_id = Integer.parseInt(post_id_text);
+            int content_type = Integer.parseInt(content_type_text);
+            int post_file_size = Integer.parseInt(file_size_text);
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection sqlConn = DatabaseConnection.getConnection();
 
-            // Query to fetch contains_text for the provided engagement_type_id
+            // Validate content type and fetch max file size
+            int max_filesize = 0;
             PreparedStatement pst = sqlConn.prepareStatement("SELECT max_filesize_mb FROM content_types WHERE type_id = ?");
-            pst.setInt(1, content_type);  // Set the provided engagement_type_id
+            pst.setInt(1, content_type);
 
             ResultSet rs = pst.executeQuery();
-
             if (rs.next()) {
                 max_filesize = rs.getInt("max_filesize_mb");
             } else {
-                // If no matching engagement_type_id is found, show an error
-                JOptionPane.showMessageDialog(this, "Invalid content type ID.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;  // Stop further processing
-            }
-
-            // Check if engagement_type_id exists and validate content rules
-            if (content_type > 0) {
-                // Check if filesize is valid
-                if (post_file_size <= 0 && post_file_size > max_filesize) {
-                    JOptionPane.showMessageDialog(this, "The filesize is too large for this content type", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;  
-                }
-                
-                if (post_id.isEmpty() || post_content.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Complete the information needed.", "Warning", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Invalid Content Type ID.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
-                }
-
-                // Prepare the insert statement
-                PreparedStatement insertPst = sqlConn.prepareStatement(
-                        "INSERT INTO post_contents(post_id, type_id, title, content, file_size_mb) "
-                        + "VALUES(?, ?, ?, ?, ?)");
-
-                insertPst.setInt(1, Integer.parseInt(post_id)); 
-                insertPst.setInt(2, content_type);
-                insertPst.setString(3, post_title);  
-                insertPst.setString(4, post_content);
-                insertPst.setInt(5, post_file_size);  
-
-                insertPst.executeUpdate();
-
-                JOptionPane.showMessageDialog(this, "Record Added!", "User", JOptionPane.OK_OPTION);
-                updateDB(); 
             }
 
-        } catch (HeadlessException | ClassNotFoundException | SQLException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+            // Validate file size
+            if (post_file_size <= 0 || post_file_size > max_filesize) {
+                JOptionPane.showMessageDialog(this, "The file size is invalid or exceeds the maximum allowed for this content type.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Insert the post content record into the database
+            PreparedStatement insertPst = sqlConn.prepareStatement(
+                "INSERT INTO post_contents(post_id, type_id, title, content, file_size_mb) VALUES(?, ?, ?, ?, ?)"
+            );
+            insertPst.setInt(1, post_id);
+            insertPst.setInt(2, content_type);
+            insertPst.setString(3, post_title);
+            insertPst.setString(4, post_content);
+            insertPst.setInt(5, post_file_size);
+
+            insertPst.executeUpdate();
+
+            // Display success message and update the UI
+            JOptionPane.showMessageDialog(this, "Record Added Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            updateDB();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter valid numeric values for Post ID, Content Type ID, and File Size.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
         
     }//GEN-LAST:event_btnPCActionPerformed
 
